@@ -83,41 +83,44 @@
 <header>
     <h2>My Products</h2>
     <nav>
-        <p><a href="./hello.html" th:href="@{http://localhost:8080/}">&#10060; Exit</a></p>
+        <p><a th:href="@{/}">&#10060; Exit</a></p>
     </nav>
 </header>
 <hr>
 
 <aside id="actions">
-    <!-- <form action="/products/create/" method="post"><button type="submit">Create Product</button></form> -->
-    <a class="create-button" href="./create-product.html" th:href="@{http://localhost:8080/products/create-product}">&#10133; New Product</a>
+    <a class="create-button" th:href="@{/products/create}">&#10133; New Product</a>
 </aside>
 <hr>
 <section id="products">
 
-        <div class="product" th:each="product : ${products}">
+    <div class="product" th:each="product : ${products}">
         <div class="product-header">
-            <h4 class="product-title" th:text = "${product.name()}"></h4>
-                <h2 class="product-status" th:text="${product.available() ? '&#128309;' : '&#128308;'}"></h2>
+            <h4 class="product-title" th:text = "${product.getName()}"></h4>
+                <h2 class="product-status" th:text="${product.isAvailable() ? '&#128309;' : '&#128308;'}"></h2>
         </div>
-        <p class="allocation" th:text="${product.destination()}"></p>
+        <p class="allocation" th:text="${product.getDestination()}"></p>
         <div class="product-content">
             <div class="return">
                 <h4>Return rate (year):</h4>
-                <p th:text="${product.returnRate() + '%'}" ></p>
+                <p th:text="${product.getReturnRate() + '%'}" ></p>
             </div>
             <div class="term">
                 <h4>Term:</h4>
-                <p th:text="${product.term() + 'months'}"></p>
+                <p th:text="${product.getTerm() + ' months'}"></p>
             </div>
             <div class="administration">
                 <h4>Administration fee:</h4>
-                <p th:text="${product.administrationRate() + '%'}"></p>
+                <p th:text="${product.getAdministrationRate() + '%'}"></p>
             </div>
             <div>
             </div>
-            <button class="product-action">  &#10006; Delete</button>
-            <button class="product-action"> &#8618; Change Status</button>
+            <form th:action="'/products/delete?id=' + ${product.getId()}" method="post">
+                <button class="product-action" type="submit">  &#10006; Delete</button>
+            </form>
+            <form th:action="'/products/change-status?id=' + ${product.getId()}" method="post">
+                <button class="product-action" type="submit"> &#8618; Change Status</button>
+            </form>
         </div>
     </div>
 </section>
