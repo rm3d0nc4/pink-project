@@ -1,6 +1,10 @@
 package com.example.pink_project.dtos;
 
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class ProductDto {
     private String name;
     private boolean available;
@@ -20,30 +24,6 @@ public class ProductDto {
 
     public ProductDto() {
 
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public boolean isAvailable() {
-        return available;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public int getReturnRate() {
-        return returnRate;
-    }
-
-    public int getTerm() {
-        return term;
-    }
-
-    public double getAdministrationRate() {
-        return administrationRate;
     }
 
     @Override

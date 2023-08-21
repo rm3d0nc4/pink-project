@@ -1,25 +1,37 @@
 package com.example.pink_project.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.Setter;
+
+import java.util.UUID;
 
 @Getter
+@Setter
 @Entity
+@Table(name = "product",schema = "public")
 public class Product {
-    @Id
-    private long id;
+    @Id @Column(name = "id")
+    private UUID id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "available")
     private  boolean available;
+    @Column(name = "destination")
     private  String destination;
+    @Column(name = "return_rate")
     private int returnRate;
+    @Column(name = "term")
     private int term;
+    @Column(name = "administration_rate")
     private double administrationRate;
 
     public Product() {}
 
-    public Product(long id, String name, boolean available, String destination, int returnRate, int term, double administrationRate) {
+    public Product(UUID id, String name, boolean available, String destination, int returnRate, int term, double administrationRate) {
         this.id = id;
         this.name = name;
         this.available = available;
@@ -28,14 +40,6 @@ public class Product {
         this.term = term;
         this.administrationRate = administrationRate;
     }
-
-    public String name() {return name;}
-    public boolean available() {return available;}
-    public String destination() { return destination;}
-    public int returnRate() {return returnRate;}
-    public int term() {return term;}
-    public double administrationRate() {return administrationRate;}
-
     @Override
     public String toString() {
         return "Product{" +

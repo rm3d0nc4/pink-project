@@ -82,7 +82,7 @@
 </header>
 <hr>
 
-<form action="#" id="create-product" th:action="@{/products/create-product}" th:object="${product}" method="post">
+<form id="create-product" th:action="@{/products/create}" method="post" th:object="${product}">
     <h3>Form</h3>
     <hr>
     <div class="small-fields">
