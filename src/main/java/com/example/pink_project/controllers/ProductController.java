@@ -2,50 +2,54 @@ package com.example.pink_project.controllers;
 
 import com.example.pink_project.dtos.ProductDto;
 import com.example.pink_project.entities.Product;
-import com.example.pink_project.repositories.ProductRepository;
+import com.example.pink_project.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.UUID;
 
 @Controller
 public class ProductController {
 
     @Autowired
-    private  ProductRepository repository;
+    private ProductService productService;
 
-    private final AtomicLong idGenerator = new AtomicLong();
     @GetMapping("/products")
     public String fetchAllProducts(Model model) {
-        List<Product> products = repository.fetchAllProducts();
-        System.out.println(model.getAttribute("product"));
+        List<Product> products = productService.listAllProducts();
         model.addAttribute("products",products);
         return "products";
     }
-    @GetMapping("/products/create-product")
+    @GetMapping("/products/create")
     public String createProductPage(Model model) {
-        model.addAttribute("product", new ProductDto());
+        ProductDto product = new ProductDto();
+        model.addAttribute("product", product);
         return "create-product";
     }
-    @PostMapping("/products/create-product")
-    public String createProduct(@ModelAttribute ProductDto dto, Model model) {
-//        model.getAttribute("product");
-        model.addAttribute("product", dto);
-        System.out.println(dto.toString());
+    @PostMapping("/products/create")
+    public String createProduct(@ModelAttribute("product") ProductDto product) {
+        // Leitura e conversão só é feita caso existam os setters do model. Caso contrário,
+        // os dados serão retornados como nulos;
 
-        Product product = new Product(
-                idGenerator.incrementAndGet(),
-                dto.getName(),
-                dto.isAvailable(),
-                dto.getDestination(),
-                dto.getReturnRate(),
-                dto.getTerm(),
-                dto.getAdministrationRate()
-        );
-        repository.createProduct(product);
+        System.out.println(product);
+        productService.createProduct(product);
+        return "redirect:/products";
+    }
+
+    @PostMapping("/products/delete")
+    public String deleteProduct(@RequestParam UUID id) {
+        System.out.println(id);
+        productService.deleteProduct(id);
+        return "redirect:/products";
+    }
+
+    @PostMapping("/products/change-status")
+    public String changeProductStatus(@RequestParam UUID id) {
+        System.out.println(id);
+        productService.changeStatus(id);
         return "redirect:/products";
     }
 }

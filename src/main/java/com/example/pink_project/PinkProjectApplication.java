@@ -5,7 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-@SpringBootApplication
+@SpringBootApplication()
+
 public class PinkProjectApplication {
 
     public static void main(String[] args) {
@@ -14,5 +15,4 @@ public class PinkProjectApplication {
         ctx.register(AppConfig.class);
         ctx.refresh();
     }
-
 }
