@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Product</title>
+    <style>
+        body {
+            background-color: #F0F0F0;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        header{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        section {
+            margin: 10px;
+        }
+
+        #create-product {
+            background-color: white;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        #create-product h3 {
+            text-align: center;
+            margin: 0px;
+        }
+        #create-product hr {
+            width: 100%;
+        }
+        label {
+            margin: 2px;
+        }
+
+        .small-fields {
+            display: grid;
+            grid-template-columns: auto auto;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            row-gap: 8px;
+
+        }
+        .small-fields > :nth-last-child(1) {
+            justify-self: flex-end;
+        }
+
+        .big-fields {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #send-button {
+            margin: 10px 40px 10px 40px;
+        }
+
+
+
+        footer {
+            text-align: center;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <h2>Create Product</h2>
+    <nav>
+        <p><a th:href="@{/products}">&#11013; Return</a></p>
+    </nav>
+</header>
+<hr>
+
+<form id="create-product" th:action="@{/products/create}" method="post" th:object="${product}">
+    <h3>Form</h3>
+    <hr>
+    <div class="small-fields">
+        <label for="name">Name</label>
+        <input name="name" type="text" maxlength="32" id="name" th:field="*{name}">
+
+        <label for="available" >Available</label>
+        <input name="available" type="checkbox" id="available" th:field="*{available}">
+    </div>
+
+    <div class="big-fields">
+        <label for="destination">Destination</label>
+        <textarea name="destination" type="text" maxlength="180" id="destination"  cols="" rows="4" th:field="*{destination}"></textarea>
+    </div>
+    <div class="small-fields">
+
+        <label for="return">Return Rate (%)</label>
+        <input name="return" type="number" min="1" max="20" id="return" th:field="*{returnRate}">
+
+        <label for="term">Term (months)</label>
+        <input name="term" type="number" min="0" max="48" id="term" th:field="*{term}">
+
+        <label for="administration">Administration (%)</label>
+        <input name="administration" type="number" min="0" max="100" id="administration" th:field="*{administrationRate}">
+    </div>
+    <button id="send-button" type="submit">&#10133; Create</button>
+
+</form>
+
+<hr>
+<footer>
+    <p>Pink Project - by rm3d0nc4</p>
+</footer>
+</body>
+</html>
