@@ -1,55 +1,65 @@
 package com.example.pink_project.controllers;
 
-import com.example.pink_project.dtos.ProductDto;
+import com.example.pink_project.contracts.NoParams;
+import com.example.pink_project.dtos.*;
 import com.example.pink_project.entities.Product;
-import com.example.pink_project.services.ProductService;
+import com.example.pink_project.exceptions.AppException;
+import com.example.pink_project.usecases.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+@RestController
+@RequestMapping("/api/v1.")
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
+    private CreateProductUsecase createProductUsecase;
+    @Autowired
+    private ListAllProductsUsecase listAllProductsUsecase;
+    @Autowired
+    private GetProductUsecase getProductUsecase;
+    @Autowired
+    private UpdateProductUsecase updateProductUsecase;
+    @Autowired
+    private RemoveProductUsecase removeProductUsecase;
+    @Autowired
+    private ChangeProductStatusUsecase changeProductStatusUsecase;
 
     @GetMapping("/products")
-    public String fetchAllProducts(Model model) {
-        List<Product> products = productService.listAllProducts();
-        model.addAttribute("products",products);
-        return "products";
-    }
-    @GetMapping("/products/create")
-    public String createProductPage(Model model) {
-        ProductDto product = new ProductDto();
-        model.addAttribute("product", product);
-        return "create-product";
-    }
-    @PostMapping("/products/create")
-    public String createProduct(@ModelAttribute("product") ProductDto product) {
-        // Leitura e conversão só é feita caso existam os setters do model. Caso contrário,
-        // os dados serão retornados como nulos;
+    public ResponseEntity<List<Product>> listAllProducts() {
 
-        System.out.println(product);
-        productService.createProduct(product);
-        return "redirect:/products";
+        return listAllProductsUsecase.execute(new NoParams());
+    }
+    @PostMapping("/products")
+    public ResponseEntity<String> createProduct(@RequestBody CreateProductDto dto) throws AppException {
+        System.out.println(dto);
+        return createProductUsecase.execute(dto);
     }
 
-    @PostMapping("/products/delete")
-    public String deleteProduct(@RequestParam UUID id) {
-        System.out.println(id);
-        productService.deleteProduct(id);
-        return "redirect:/products";
+    @GetMapping("/products/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable("id")  UUID id) throws AppException {
+
+        return getProductUsecase.execute(new GetProductDto(id));
     }
 
-    @PostMapping("/products/change-status")
-    public String changeProductStatus(@RequestParam UUID id) {
-        System.out.println(id);
-        productService.changeStatus(id);
-        return "redirect:/products";
+    @DeleteMapping("/products/{id}")
+    public ResponseEntity<String> removeProduct(@PathVariable(value = "id") UUID id) throws AppException {
+        return removeProductUsecase.execute(new RemoveProductDto(id));
+    }
+
+    @PutMapping("/products/{id}")
+    public ResponseEntity<String> updateProduct(@PathVariable(value = "id") UUID id, @RequestBody UpdateProductDto dto) throws AppException {
+        dto.setId(id);
+        System.out.println(dto);
+        return updateProductUsecase.execute(dto);
+    }
+
+    @PatchMapping("/products/{id}/change-status")
+    public ResponseEntity<String> changeProductStatus(@PathVariable(value = "id") UUID id) throws AppException {
+        return changeProductStatusUsecase.execute(new ChangeProductStatusDto(id));
     }
 }
