@@ -77,7 +77,7 @@ public class ProductController {
     }
 
 
-    @Operation(description = "Get product by id", summary = "Get product by id")
+    @Operation(description = "Get product by id", summary = "Delete product by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Product was successfully deleted", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Product not found", content = @Content(mediaType = "application/json")),
@@ -103,7 +103,7 @@ public class ProductController {
     }
 
 
-    @Operation(description = "Update product by id", summary = "Update product by id")
+    @Operation(description = "Update product by id", summary = "Update product status by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product status was successfully updated", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Product not found", content = @Content(mediaType = "application/json")),
